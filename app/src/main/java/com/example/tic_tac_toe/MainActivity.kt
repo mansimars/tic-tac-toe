@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -113,9 +114,9 @@ fun tictactoe() {
             createBox()
 
         if(buttonClickedResetState.value)
-            Box(modifier = Modifier.background(Color.Magenta)) {
+        {
 
-            }
+        }
 
 
         Row(modifier = Modifier.fillMaxHeight(),
@@ -137,101 +138,26 @@ fun tictactoe() {
 
 @Composable
 private fun createBox() {
+
+
     Column() {
 
-        Row() {
-            Box(
-                modifier = Modifier
-                    .padding(7.dp)
-                    .size(100.dp)
-                    .background(Color.DarkGray)
-            ) {
+        for(i in 0..2)
+        {
+            Divider(color= Color.Black, modifier = Modifier.size(5.dp))
+            Row(modifier = Modifier.border(shape = ))
+            {
+                for (j in 0..2) {
+                    Box(
+                        modifier = Modifier
+                            .padding(7.dp)
+                            .size(100.dp)
+                            .background(Color.DarkGray)
+                    ) {
 
-                Text(text = "*")
-            }
-
-            Box(
-                modifier = Modifier
-                    .padding(7.dp)
-                    .size(100.dp)
-                    .background(Color.DarkGray)
-            ) {
-
-                Text(text = "*")
-            }
-
-            Box(
-                modifier = Modifier
-                    .padding(7.dp)
-                    .size(100.dp)
-                    .background(Color.DarkGray)
-            ) {
-
-                Text(text = "*")
-            }
-        }
-
-        Row() {
-            Box(
-                modifier = Modifier
-                    .padding(7.dp)
-                    .size(100.dp)
-                    .background(Color.DarkGray)
-            ) {
-
-                Text(text = "*")
-            }
-
-            Box(
-                modifier = Modifier
-                    .padding(7.dp)
-                    .size(100.dp)
-                    .background(Color.DarkGray)
-            ) {
-
-                Text(text = "*")
-            }
-
-            Box(
-                modifier = Modifier
-                    .padding(7.dp)
-                    .size(100.dp)
-                    .background(Color.DarkGray)
-            ) {
-
-                Text(text = "*")
-            }
-        }
-
-        Row() {
-            Box(
-                modifier = Modifier
-                    .padding(7.dp)
-                    .size(100.dp)
-                    .background(Color.DarkGray)
-            ) {
-
-                Text(text = "*")
-            }
-
-            Box(
-                modifier = Modifier
-                    .padding(7.dp)
-                    .size(100.dp)
-                    .background(Color.DarkGray)
-            ) {
-
-                Text(text = "*")
-            }
-
-            Box(
-                modifier = Modifier
-                    .padding(7.dp)
-                    .size(100.dp)
-                    .background(Color.DarkGray)
-            ) {
-
-                Text(text = "*")
+                        Text(text = "*")
+                    }
+                }
             }
         }
 
