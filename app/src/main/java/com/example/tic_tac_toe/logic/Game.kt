@@ -99,7 +99,7 @@ class Game(var score1:Int = 0, var score2:Int = 0) {
 
     }
 
-    fun resetBlock()
+    fun resetGame()
     {
         for (i in 0..2)
         {
@@ -114,6 +114,8 @@ class Game(var score1:Int = 0, var score2:Int = 0) {
     fun getaPlayer2Score():Int{return player2Score}
     fun getaPlayer1Sign():String{return player1Sign}
     fun getaPlayer2Sign():String{return player2Sign}
+    fun setaPlayer1Score(){player1Score=0}
+    fun setaPlayer2Score(){player2Score=0}
 
 
 

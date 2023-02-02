@@ -1,26 +1,19 @@
 package com.example.tic_tac_toe
 
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,7 +32,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    tictactoe()
+                    Tictactoe()
                 }
             }
         }
@@ -48,18 +41,18 @@ class MainActivity : ComponentActivity() {
 
 var g1= Game()
 @Composable
-fun tictactoe() {
+fun Tictactoe() {
     //Text(text = "Tic-Tac-Toe")
 
 
-    var buttonClickedStartState = remember {
-        mutableStateOf(false)
-    }
-
+    var startState = remember { mutableStateOf(false) }
+    var resetState = remember { mutableStateOf( false )}
+    var scoreState = remember{ mutableStateOf(false)}
 
 
     Column(
         modifier = Modifier
+            .background(Color.Black)
             .fillMaxWidth()
             .fillMaxHeight(),
             //.padding(5.dp),
@@ -86,7 +79,7 @@ fun tictactoe() {
 
 
                 onClick = {
-                    buttonClickedStartState.value=true;
+                    startState.value=true;
                 }
             )
             {
@@ -98,10 +91,9 @@ fun tictactoe() {
             //**RESET GAME
             Button(modifier = Modifier.padding(5.dp),
 
-
                 onClick = {
-                    buttonClickedStartState.value=false;
-                    g1.resetBlock()
+                    resetState.value=true;
+                    startState.value=false;
 
                 }
             )
@@ -117,13 +109,41 @@ fun tictactoe() {
 
 
         }
-        if(buttonClickedStartState.value)
+        if(startState.value)
+        {
             createBox()
+
+            Button(modifier = Modifier
+                .padding(5.dp)
+                .padding(top = 25.dp, bottom = 20.dp),
+
+
+                onClick = {
+                    g1.setaPlayer1Score()
+                    g1.setaPlayer2Score()
+                    resetState.value=true;
+                    startState.value=false;
+                }
+            ){
+                Text(
+                    text = "Reset Score",
+                    style = MaterialTheme.typography.button
+                )
+            }
+        }
         else
         {
             Box() {
 
             }
+        }
+
+
+
+        if(resetState.value)
+        {
+            g1.resetGame()
+            startState.value=true
         }
 
         Row(modifier = Modifier.fillMaxHeight(),
@@ -132,10 +152,23 @@ fun tictactoe() {
 
         ) {
 
-            
-            Text(text = "Player ${g1.getaPlayer1Sign()}: ${g1.getaPlayer1Score()}       ")
+        Column(){
+            if(scoreState.value || !scoreState.value) {
+                Text(
+                    fontSize=15.sp,
+                    color = Color.Red,
+                    fontWeight = FontWeight.Bold,
+                    //text = "Player ${g1.getaPlayer1Sign()}: ${g1.getaPlayer1Score()}       "
+                    text = "Player ${g1.getaPlayer1Sign()}       Player ${g1.getaPlayer2Sign()}"
+                )
 
-            Text(text = "Player ${g1.getaPlayer2Sign()}: ${g1.getaPlayer2Score()}")
+                Text(
+                    fontSize=15.sp,
+                    color = Color.White,
+                    text = "      ${g1.getaPlayer1Score()}                   ${g1.getaPlayer2Score()}"
+                )
+            }
+        }
         }
 
 
@@ -174,10 +207,16 @@ fun alertDialog(state:Boolean, winOrFull: String){
                 ) {
                     Button(
                         modifier = Modifier.fillMaxWidth(),
-                        onClick = { openDialog.value = false }
+                        onClick =
+                        {
+                            openDialog.value = false
+                            g1.resetGame();
+                        }
                     ) {
-                        Text("Restart Game")
+                        Text("View Game")
+
                     }
+
                 }
             }
         )
@@ -187,24 +226,24 @@ fun alertDialog(state:Boolean, winOrFull: String){
 
 //@Preview(showBackground = true)
 @Composable
-private fun createBox(modifier: Modifier=Modifier.wrapContentSize()) {
+private fun createBox() {
 
     var winOrFull:String = "none"
 
     var winState = remember{ mutableStateOf(false) }
     var fullState = remember{ mutableStateOf(false)}
-    
+
 
     Box(modifier = Modifier
         .size(220.dp)
-        .background(Color.White)) {
+        .background(Color.Black)) {
 
 
         Column {
 
             for (i in 0..2) {
                 if(i != 0)
-                Divider(color= Color.Black, thickness = 5.dp)
+                Divider(color= Color.White, thickness = 5.dp)
 
                 Row(modifier = Modifier
                     .height(IntrinsicSize.Min)
@@ -219,9 +258,9 @@ private fun createBox(modifier: Modifier=Modifier.wrapContentSize()) {
                         if(j !=0)
                             Divider(modifier = Modifier
                                 .fillMaxHeight()
-                                .width(5.dp), color= Color.Black, thickness = 5.dp)
+                                .width(5.dp), color= Color.White, thickness = 5.dp)
 
-                        Button(colors = ButtonDefaults.buttonColors(Color.White),
+                        Button(colors = ButtonDefaults.buttonColors(Color.Black),
                             modifier = Modifier
                                 .size(70.dp),
                             onClick = {
@@ -241,7 +280,9 @@ private fun createBox(modifier: Modifier=Modifier.wrapContentSize()) {
                             })
 
                         {
-                            Text(text = buttonClickState.value, fontSize = 30.sp)
+                            Text(text = buttonClickState.value,
+                                fontSize = 30.sp,
+                                color = Color.White)
                         }
 
                 }
@@ -280,6 +321,6 @@ private fun CreateHeader() {
 @Composable
 fun DefaultPreview() {
     TictactoeTheme {
-        tictactoe()
+        Tictactoe()
     }
 }
