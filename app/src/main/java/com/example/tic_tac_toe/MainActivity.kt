@@ -109,7 +109,7 @@ fun Tictactoe() {
 
 
         }
-        if(startState.value)
+        if(startState.value )
         {
             createBox()
 
